@@ -69,7 +69,7 @@ export default {
   },
   methods: {
     async sendMessage() {
-      const apiKey = 'WdYPw4WAXb96jMcf'; // Replace with your actual API key
+      const apiKey = 'Wdj7EExbzUdYPw4WAXb96jMcf'; // Replace with your actual API key
       const apiUrl = `https://apps.mnotify.net/smsapi?key=${apiKey}&to=${this.phoneNumber}&msg=${encodeURIComponent(this.message)}&sender_id=${this.senderId}`;
 
       try {
