@@ -1,4 +1,6 @@
+
 <template>
+  <img class="header-image" src="IHP_PIC_LG.ico">
   <div class="container">
     <div class="form">
 
@@ -26,8 +28,9 @@
     </div>
 
     <div class="toast" :class="toastClass">{{ toastMessage }}</div>
-    
-    <div class="campaign-history">
+  </div>
+  <v-card>
+     <div class="campaign-history">
       <h2>Campaign History</h2>
       <table>
         <thead>
@@ -46,15 +49,16 @@
         </tbody>
       </table>
     </div>
-  </div>
+  </v-card>
 </template>
+
 <script>
 import axios from 'axios';
 
 export default {
   data() {
     return {
-        phoneNumber: '',
+      phoneNumber: '',
       senderId: '',
       message: '',
       senderIds: ['IHP24', 'GEC Shalom'], // Replace with actual sender IDs
@@ -65,32 +69,39 @@ export default {
   },
   methods: {
     async sendMessage() {
-      const apiKey = 'Wdj7EExbzUdYPw4WAXb96jMcf'; // Replace with your actual API key
+      const apiKey = 'WdYPw4WAXb96jMcf'; // Replace with your actual API key
       const apiUrl = `https://apps.mnotify.net/smsapi?key=${apiKey}&to=${this.phoneNumber}&msg=${encodeURIComponent(this.message)}&sender_id=${this.senderId}`;
 
       try {
         const response = await axios.get(apiUrl);
         if (response.status === 200) {
-          alert('success', 'Message sent successfully');
+          this.showToast('success', 'Message sent successfully');
           this.addToHistory(this.message, this.senderId, this.phoneNumber);
 
         } else {
-          alert('failure', 'Message sending failed');
+          this.showToast('failure', 'Message sending failed');
         }
       } catch (error) {
-        alert('failure', 'An error occurred while sending the message');
+        this.showToast('failure', 'An error occurred while sending the message');
         console.error(error);
       }
     },
 
+    showToast(type, message) {
+      this.toastClass = type;
+      this.toastMessage = message;
+      setTimeout(() => {
+        this.toastClass = '';
+        this.toastMessage = '';
+      }, 3000);
+    },
 
     addToHistory(message, senderId, phoneNumber) {
-  this.campaignHistory.unshift({ message, senderId, phoneNumber });
-  if (this.campaignHistory.length > 20) {
-    this.campaignHistory.pop();
-  }
-},
-
+      this.campaignHistory.unshift({ message, senderId, phoneNumber });
+      if (this.campaignHistory.length > 20) {
+        this.campaignHistory.pop();
+      }
+    },
   },
 };
 </script>
@@ -101,7 +112,7 @@ export default {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  padding-right: 100px;
+  padding: 0 20px; /* Adjust the padding as needed */
 }
 
 .form {
@@ -109,7 +120,8 @@ export default {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 400px;
+  width: 100%; /* Make the form width 100% */
+  max-width: 400px; /* Set a maximum width for the form */
 }
 
 .form-group {
